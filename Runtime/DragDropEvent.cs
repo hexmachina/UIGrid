@@ -8,6 +8,7 @@ using UnityEngine.Events;
 
 namespace TW.UI
 {
+	[DisallowMultipleComponent]
 	public class DragDropEvent : UIBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 	{
 
