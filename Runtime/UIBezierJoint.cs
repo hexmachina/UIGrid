@@ -118,37 +118,20 @@ namespace TW.UI
 			if (!bezier)
 				return;
 
-			Vector2 thisPivot = rectTransform.pivot;
+			//Vector2 thisPivot = rectTransform.pivot;
 			if (start && (start.hasChanged || startChanged))
 			{
 				start.hasChanged = false;
 				startChanged = false;
-				//var worldStart = start.TransformPoint(thisPivot);
-				//var canvasStart = root.InverseTransformPoint(worldStart);
-
-				//bezier.startPoint = canvasStart;
 				UpdateStart();
 			}
-
-
 
 			if (end && (end.hasChanged || endChanged))
 			{
 				endChanged = false;
 				end.hasChanged = false;
 				UpdateEnd();
-				//var worldEnd = end.TransformPoint(thisPivot);
-				//var canvasEnd = root.InverseTransformPoint(worldEnd);
-
-				//if (overrideEndOffset)
-				//{
-				//	canvasEnd.x += endOffset.x + (end.rect.width * 0.5f) * _endPivotX;
-				//	canvasEnd.y += endOffset.y + (end.rect.height * 0.5f) * _endPivotY;
-				//}
-				//bezier.endPoint = canvasEnd;
 			}
-
-
 
 		}
 
