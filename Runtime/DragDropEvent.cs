@@ -37,11 +37,18 @@ namespace TW.UI
 		}
 
 
-		public ConstraintType constraint;
+		[SerializeField] private ConstraintType _constraint;
 
-		public SortingType dragSorting;
+		public ConstraintType constraint { get { return _constraint; } set { _constraint = value; } }
 
-		public DragDirection dragDirection;
+		[SerializeField] private SortingType _dragSorting;
+
+		public SortingType dragSorting { get { return _dragSorting; } set { _dragSorting = value; } }
+
+		[SerializeField] private DragDirection _dragDirection;
+
+		public DragDirection dragDirection { get { return _dragDirection; } set { _dragDirection = value; } }
+
 
 		private Vector2 lastPointPosition;
 
@@ -65,7 +72,7 @@ namespace TW.UI
 			}
 		}
 
-		public void OnBeginDrag(PointerEventData eventData)
+		public virtual void OnBeginDrag(PointerEventData eventData)
 		{
 			if (!enabled)
 				return;
@@ -95,7 +102,7 @@ namespace TW.UI
 
 			lastPointPosition = eventData.position;
 
-			switch (dragSorting)
+			switch (_dragSorting)
 			{
 				case SortingType.None:
 					break;
@@ -113,7 +120,7 @@ namespace TW.UI
 
 		}
 
-		public void OnDrag(PointerEventData eventData)
+		public virtual void OnDrag(PointerEventData eventData)
 		{
 			if (!enabled)
 				return;
@@ -125,7 +132,7 @@ namespace TW.UI
 			Vector3 oldPos = rectTransform.position;
 			rectTransform.position = newPosition;
 
-			switch (constraint)
+			switch (_constraint)
 			{
 				case ConstraintType.None:
 					break;
@@ -155,11 +162,11 @@ namespace TW.UI
 			lastPointPosition = currentMousePosition;
 		}
 
-		public void OnEndDrag(PointerEventData eventData)
+		public virtual void OnEndDrag(PointerEventData eventData)
 		{
 			if (!enabled)
 				return;
-			if (dragSorting != SortingType.None)
+			if (_dragSorting != SortingType.None)
 			{
 				rectTransform.SetSiblingIndex(order);
 			}
@@ -222,7 +229,7 @@ namespace TW.UI
 		private bool CheckDragDirection(PointerEventData eventData)
 		{
 
-			switch (dragDirection)
+			switch (_dragDirection)
 			{
 				case DragDirection.Horizontal:
 					return Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y);
