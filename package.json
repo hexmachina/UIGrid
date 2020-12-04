@@ -15,6 +15,7 @@
         "url": "https://www.tom-wilhelm.com"
       },
     "hideInEditor": false,
+    "license": "MIT",
     "keywords": [
       "ui",
       "events",
