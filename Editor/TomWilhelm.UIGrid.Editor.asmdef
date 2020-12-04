@@ -1,0 +1,15 @@
+{
+    "name": "tomwilhelm.uigrid.editor",
+    "references": [
+        "GUID:4bbb4086eadd3d44d8daae751ffb336b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
