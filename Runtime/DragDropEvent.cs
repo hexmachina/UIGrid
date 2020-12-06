@@ -73,9 +73,14 @@ namespace TW.UI
 			}
 		}
 
+		private bool m_Dragging = true;
+
 		public virtual void OnBeginDrag(PointerEventData eventData)
 		{
 			if (!enabled)
+				return;
+
+			if (eventData.button != PointerEventData.InputButton.Left)
 				return;
 
 			if (!CheckDragDirection(eventData))
@@ -118,12 +123,18 @@ namespace TW.UI
 				default:
 					break;
 			}
-
+			m_Dragging = true;
 		}
 
 		public virtual void OnDrag(PointerEventData eventData)
 		{
 			if (!enabled)
+				return;
+
+			if (!m_Dragging)
+				return;
+
+			if (eventData.button != PointerEventData.InputButton.Left)
 				return;
 
 			Vector2 currentMousePosition = eventData.position;
@@ -167,6 +178,11 @@ namespace TW.UI
 		{
 			if (!enabled)
 				return;
+
+			if (eventData.button != PointerEventData.InputButton.Left)
+				return;
+
+			m_Dragging = false;
 			if (_dragSorting != SortingType.None)
 			{
 				rectTransform.SetSiblingIndex(order);

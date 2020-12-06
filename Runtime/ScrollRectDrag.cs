@@ -44,6 +44,9 @@ namespace TW.UI
 
 		public override void OnBeginDrag(PointerEventData eventData)
 		{
+			if (eventData.button != PointerEventData.InputButton.Left)
+				return;
+
 			if (eventData.pointerEnter && eventData.pointerEnter != gameObject && CheckDragDirection(eventData))
 			{
 				if (eventData.pointerEnter.TryGetComponent(out itemDrag))
@@ -62,6 +65,9 @@ namespace TW.UI
 
 		public override void OnDrag(PointerEventData eventData)
 		{
+			if (eventData.button != PointerEventData.InputButton.Left)
+				return;
+
 			if (itemDrag)
 			{
 				Vector2 currentMousePosition = eventData.position;
@@ -84,6 +90,9 @@ namespace TW.UI
 
 		public override void OnEndDrag(PointerEventData eventData)
 		{
+			if (eventData.button != PointerEventData.InputButton.Left)
+				return;
+
 			if (itemDrag)
 			{
 				eventData.pointerDrag = itemDrag.gameObject;
