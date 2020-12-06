@@ -26,8 +26,6 @@ namespace TW.UI
 
 		private Vector2 screenPosition;
 
-
-
 		private bool _engaged = false;
 
 		public bool engaged => _engaged;
@@ -80,7 +78,7 @@ namespace TW.UI
 				return;
 
 			downState = false;
-			if (enabled)
+			if (_engaged && enabled)
 			{
 				SetPivot();
 				SetAnchoredPosition();
@@ -94,7 +92,7 @@ namespace TW.UI
 				return;
 
 			downState = true;
-			if (enabled)
+			if (_engaged)
 			{
 				onDisengaged.Invoke();
 			}
@@ -102,8 +100,8 @@ namespace TW.UI
 
 		private void OnExit(UITooltipReceiver arg1, PointerEventData arg2)
 		{
-			if (arg2.pointerCurrentRaycast.screenPosition != screenPosition)
-				return;
+			//if (arg2.pointerCurrentRaycast.screenPosition != screenPosition)
+			//	return;
 
 			_engaged = false;
 			onDisengaged.Invoke();
@@ -140,7 +138,6 @@ namespace TW.UI
 			screenPosition = pos;
 			if (engaged)
 			{
-
 				SetAnchoredPosition();
 			}
 

@@ -14,6 +14,8 @@ namespace TW.UI
 		public event Action<UITooltipReceiver, PointerEventData> onDown;
 		public event Action<UITooltipReceiver, PointerEventData> onUp;
 
+		private bool _entered = false;
+
 		protected override void OnEnable()
 		{
 			UITooltipManager.instance.RegisterReceiver(this);
@@ -21,6 +23,13 @@ namespace TW.UI
 
 		protected override void OnDisable()
 		{
+			if (_entered)
+			{
+				_entered = false;
+
+				//var eventData = new PointerEventData(EventSystem.current);
+				onExit?.Invoke(this, null);
+			}
 			UITooltipManager.instance.UnregisterReceiver(this);
 
 		}
@@ -28,11 +37,14 @@ namespace TW.UI
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
+			_entered = true;
 			onEnter?.Invoke(this, eventData);
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
+			Debug.Log(gameObject.name);
+			_entered = false;
 			onExit?.Invoke(this, eventData);
 		}
 
@@ -44,9 +56,13 @@ namespace TW.UI
 
 		public void OnPointerUp(PointerEventData eventData)
 		{
+			if (!enabled)
+				return;
+
 			onUp?.Invoke(this, eventData);
 
 		}
+
 	}
 
 }
