@@ -1,15 +1,13 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System;
-using UnityEngine.Events;
 
 namespace TW.UI
 {
 	[DisallowMultipleComponent]
-	public class DragDropEvent : UIBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+	[RequireComponent(typeof(RectTransform))]
+	public class Draggable : UIBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 	{
 
 		public enum ConstraintType

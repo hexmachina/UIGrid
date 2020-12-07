@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.EventSystems;
 
 namespace TW.UI
@@ -10,7 +11,21 @@ namespace TW.UI
 	[ExecuteInEditMode]
 	public class UIBezierJoint : UIBehaviour
 	{
-		public RectTransform start;
+		[FormerlySerializedAs("start")]
+		public RectTransform _start;
+
+		public RectTransform start
+		{
+			get { return _start; }
+			set
+			{
+				if (value != _start)
+				{
+					_start = value;
+					startChanged = true;
+				}
+			}
+		}
 
 		public bool overrideStartOffset;
 		public Vector2 startOffset;
@@ -46,8 +61,22 @@ namespace TW.UI
 				}
 			}
 		}
+		[FormerlySerializedAs("end")]
+		public RectTransform _end;
 
-		public RectTransform end;
+		public RectTransform end
+		{
+			get { return _end; }
+			set
+			{
+				if (value != _end)
+				{
+					_end = value;
+					endChanged = true;
+				}
+			}
+		}
+
 		public bool overrideEndOffset;
 		public Vector2 endOffset;
 
@@ -107,29 +136,23 @@ namespace TW.UI
 			root = rectTransform.root as RectTransform;
 		}
 
-		protected override void OnEnable()
-		{
-
-		}
-
 
 		private void Update()
 		{
 			if (!bezier)
 				return;
 
-			//Vector2 thisPivot = rectTransform.pivot;
-			if (start && (start.hasChanged || startChanged))
+			if (_start && (_start.hasChanged || startChanged))
 			{
-				start.hasChanged = false;
+				_start.hasChanged = false;
 				startChanged = false;
 				UpdateStart();
 			}
 
-			if (end && (end.hasChanged || endChanged))
+			if (_end && (_end.hasChanged || endChanged))
 			{
 				endChanged = false;
-				end.hasChanged = false;
+				_end.hasChanged = false;
 				UpdateEnd();
 			}
 
@@ -137,34 +160,58 @@ namespace TW.UI
 
 		private void UpdateStart()
 		{
-			if (!start)
+			if (!_start)
 				return;
-			//var worldStart = start.TransformPoint(thisPivot);
-			var canvasStart = root.InverseTransformPoint(start.position);
 
-			if (overrideStartOffset)
-			{
-				canvasStart.x += startOffset.x + (start.rect.width * 0.5f) * _startPivotX;
-				canvasStart.y += startOffset.y + (start.rect.height * 0.5f) * _startPivotY;
-			}
-			bezier.startPoint = canvasStart;
+			bezier.startPoint = UpdateEdge(_start, overrideStartOffset, startOffset, _startPivotX, _startPivotY);
 		}
 
 		private void UpdateEnd()
 		{
-			if (!end)
+			if (!_end)
 				return;
 
-			//var worldEnd = end.TransformPoint(thisPivot);
-			var canvasEnd = root.InverseTransformPoint(end.position);
+			bezier.endPoint = UpdateEdge(_end, overrideEndOffset, endOffset, _endPivotX, _endPivotY);
 
-			if (overrideEndOffset)
+		}
+
+		private Vector2 UpdateEdge(RectTransform target, bool overrideOffset, Vector2 offset, float pivotX, float pivotY)
+		{
+			var canvasPoint = root.InverseTransformPoint(target.position);
+
+			if (overrideOffset)
 			{
-				canvasEnd.x += endOffset.x + (end.rect.width * 0.5f) * _endPivotX;
-				canvasEnd.y += endOffset.y + (end.rect.height * 0.5f) * _endPivotY;
+				canvasPoint.x += offset.x + (target.rect.width * 0.5f) * pivotX;
+				canvasPoint.y += offset.y + (target.rect.height * 0.5f) * pivotY;
 			}
-			bezier.endPoint = canvasEnd;
+			return canvasPoint;
+		}
 
+		public void ClearStart()
+		{
+			start = null;
+		}
+		public void ClearEnd()
+		{
+			end = null;
+		}
+
+		public void SetStartByGameObject(GameObject go)
+		{
+			var rect = go.transform as RectTransform;
+			if (rect)
+			{
+				start = rect;
+			}
+		}
+
+		public void SetEndByGameObject(GameObject go)
+		{
+			var rect = go.transform as RectTransform;
+			if (rect)
+			{
+				end = rect;
+			}
 		}
 
 		protected override void OnValidate()
