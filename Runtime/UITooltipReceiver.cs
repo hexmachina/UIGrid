@@ -43,7 +43,6 @@ namespace TW.UI
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
-			Debug.Log(gameObject.name);
 			_entered = false;
 			onExit?.Invoke(this, eventData);
 		}
