@@ -35,6 +35,8 @@ namespace TW.UI
 
 		public UnityEvent onDropFailed = new UnityEvent();
 
+		public UnityEvent onDragEnd = new UnityEvent();
+
 		private Vector2 lastPointPosition;
 		private Graphic itemDrag;
 
@@ -116,7 +118,7 @@ namespace TW.UI
 					}
 				}
 				itemDrag = null;
-
+				onDragEnd.Invoke();
 			}
 			else
 			{
