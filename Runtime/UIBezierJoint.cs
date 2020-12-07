@@ -198,6 +198,11 @@ namespace TW.UI
 
 		public void SetStartByGameObject(GameObject go)
 		{
+			if (!go)
+			{
+				start = null;
+				return;
+			}
 			var rect = go.transform as RectTransform;
 			if (rect)
 			{
@@ -207,6 +212,11 @@ namespace TW.UI
 
 		public void SetEndByGameObject(GameObject go)
 		{
+			if (!go)
+			{
+				end = null;
+				return;
+			}
 			var rect = go.transform as RectTransform;
 			if (rect)
 			{
